@@ -1,0 +1,30 @@
+definitions:
+  models.Response:
+    properties:
+      data:
+        additionalProperties: {}
+        type: object
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+info:
+  contact: {}
+paths:
+  /ping:
+    get:
+      consumes:
+      - application/json
+      description: check server
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Ping
+      tags:
+      - ping
+swagger: "2.0"

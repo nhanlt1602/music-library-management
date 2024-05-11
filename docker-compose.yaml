@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8083"
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
+    depends_on:
+      - mongo
+    networks:
+      - backend
+
+  mongo:
+    image: mongo
+    restart: unless-stopped
+    ports:
+      - "27020:27017"
+    networks:
+      - backend
+
+networks:
+  backend:
