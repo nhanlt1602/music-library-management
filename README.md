@@ -63,11 +63,10 @@ docker-compose up -d
 # Step 2: Change Server Port in .env file
 # Step 3: Open terminal & make run
 
+- You can import file 'music-library-management-api' collection in postmancollection folder, import collection in postman for testing api.
+```
 ![Alt text](images/server_local.png)
 
----
-- You can import file 'music-library-management-api' collection in postman, for testing api
-```
 
 The application starts at port 8080:
 
