@@ -1,3 +1,10 @@
+# base65536
+[![GoDoc](https://img.shields.io/badge/go-reference-blue.svg?style=flat-square)](https://godoc.org/github.com/usk81/base65536)
+[![Gin](https://img.shields.io/badge/go-reference-green.svg?style=flat-square)](https://gin-gonic.com/)
+[![License](http://img.shields.io/badge/license-mit-blue.svg?style=flat-square)](https://github.com/usk81/base65536/blob/master/LICENSE)
+[![Build Status](http://img.shields.io/travis/usk81/base65536.svg?style=flat-square)](https://travis-ci.org/usk81/base65536)
+
+
 ![Alt text](https://miro.medium.com/v2/resize:fit:472/1*WpUuwCQZWhVzP3X0Gibaqw.png)
 ----------------------------------------------------
 Hi everyone, this project is a 'Boilerplate to build RESTful
