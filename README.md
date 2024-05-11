@@ -1,4 +1,3 @@
-# base65536
 [![GoDoc](https://img.shields.io/badge/go-reference-blue.svg?style=flat-square)](https://godoc.org/github.com/usk81/base65536)
 [![Gin](https://img.shields.io/badge/go-reference-green.svg?style=flat-square)](https://gin-gonic.com/)
 [![License](http://img.shields.io/badge/license-mit-blue.svg?style=flat-square)](https://github.com/usk81/base65536/blob/master/LICENSE)
