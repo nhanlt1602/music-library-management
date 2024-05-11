@@ -28,5 +28,9 @@ func MusicTrackRoute(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
 			"",
 			controllers.GetMusicTracks,
 		)
+		auth.DELETE(
+			"/:id",
+			controllers.DeleteMusicTrack,
+		)
 	}
 }

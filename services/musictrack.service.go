@@ -2,6 +2,7 @@ package services
 
 import (
 	"errors"
+	"log"
 	"music-library-management/models"
 	db "music-library-management/models/db"
 
@@ -36,22 +37,39 @@ func GetMusicTrackById(musicTrackId primitive.ObjectID) (*db.MusicTrack, error) 
 }
 
 // Get Music Tracks get all music tracks, have paging, sorting, and filtering
-func GetMusicTracks(page int, size int, sort string, filter map[string]interface{}) ([]*db.MusicTrack, error) {
+func GetMusicTracks(request *models.GetMusicTrackRequest) ([]*db.MusicTrack, error) {
 	musicTracks := []*db.MusicTrack{}
-	query := bson.M{}
+	limit := int64(request.Paging.Size)
+	page := int64(request.Paging.Page)
+	var err error
+	// how to search if request.title != "", request.artist != "", request.album != "", request.genre != "", request.releaseYear != 0
 
-	for key, value := range filter {
-		query[key] = value
+	query := bson.M{}
+	if request.Title != "" {
+		query["title"] = request.Title
 	}
 
-	limit := int64(size)
-	skip := int64((page - 1) * size)
+	if request.Artist != "" {
+		query["artist"] = request.Artist
+	}
 
-	err := mgm.Coll(&db.MusicTrack{}).SimpleFind(&musicTracks, query, &options.FindOptions{
-		Limit: &limit,
-		Skip:  &skip,
-		Sort:  sort,
-	})
+	if request.Album != "" {
+		query["album"] = request.Album
+	}
+
+	if request.Genre != "" {
+		query["genre"] = request.Genre
+	}
+
+	if request.Paging.PagingIgnore {
+		err = mgm.Coll(&db.MusicTrack{}).SimpleFind(&musicTracks, query, &options.FindOptions{})
+	} else {
+		findOptions := options.Find().
+			SetSkip(int64(page * limit)).
+			SetLimit(int64(limit))
+
+		err = mgm.Coll(&db.MusicTrack{}).SimpleFind(&musicTracks, query, findOptions)
+	}
 
 	if err != nil {
 		return nil, errors.New("Failed to get music tracks")
@@ -74,7 +92,8 @@ func CreateMusicTrack(musicTrackId primitive.ObjectID, musicTrackRequest *models
 
 	err := mgm.Coll(musicTrack).Create(musicTrack)
 	if err != nil {
-		return nil, errors.New("Failed to create music track")
+		log.Println("Failed to create music track with error: ", err)
+		return nil, err
 	}
 
 	return musicTrack, nil
@@ -88,14 +107,19 @@ func UpdateMusicTrack(musicTrackId primitive.ObjectID, musicTrackRequest *models
 		return errors.New("Failed to find music track")
 	}
 
-	musicTrack.Title = musicTrackRequest.Title
-	musicTrack.Artist = musicTrackRequest.Artist
-	musicTrack.Album = musicTrackRequest.Album
-	musicTrack.Genre = musicTrackRequest.Genre
-	musicTrack.ReleaseYear = musicTrackRequest.ReleaseYear
-	musicTrack.Duration = musicTrackRequest.Duration
-	musicTrack.Mp3File = musicTrackRequest.Mp3File
-	err = mgm.Coll(musicTrack).Update(musicTrack)
+	musicTrackUpdate := bson.M{
+		"$set": bson.M{
+			"title":        musicTrackRequest.Title,
+			"artist":       musicTrackRequest.Artist,
+			"album":        musicTrackRequest.Album,
+			"genre":        musicTrackRequest.Genre,
+			"release_year": musicTrackRequest.ReleaseYear,
+			"duration":     musicTrackRequest.Duration,
+			"mp3_file":     musicTrackRequest.Mp3File,
+		},
+	}
+
+	_, err = mgm.Coll(musicTrack).UpdateOne(mgm.Ctx(), bson.M{field.ID: musicTrackId}, musicTrackUpdate)
 
 	if err != nil {
 		return errors.New("Failed to update music track")

@@ -75,6 +75,7 @@ func UpdateMusicTrack(c *gin.Context) {
 	}
 
 	response.StatusCode = http.StatusCreated
+	response.Message = "Music Track updated successfully"
 	response.Success = true
 	response.SendResponse(c)
 }
@@ -107,6 +108,7 @@ func DeleteMusicTrack(c *gin.Context) {
 
 	response.StatusCode = http.StatusCreated
 	response.Success = true
+	response.Message = "Music Track deleted successfully"
 	response.SendResponse(c)
 }
 
@@ -151,7 +153,12 @@ func GetMusicTrackById(c *gin.Context) {
 // @Param        page query int false "Page Number"
 // @Param        size query int false "Page Size"
 // @Param        sort query string false "Sort Field"
-// @Param        filter query string false "Filter Field"
+// @Param 	  	 paging_ignore query bool false "Ignore Paging"
+// @Param        search query string false "search Field"
+// @Param        title query string false "Title"
+// @Param        artist query string false "Artist"
+// @Param        album query string false "Album"
+// @Param        genre query string false "Genre"
 // @Success      200  {object}  models.Response
 // @Failure      400  {object}  models.Response
 // @Router       /music-tracks [get]
@@ -161,20 +168,41 @@ func GetMusicTracks(c *gin.Context) {
 		Success:    false,
 	}
 
-	page, size, sort, filterMap, shouldReturn := utils.Pagination(c, response)
-	if shouldReturn {
-		return
-	}
+	request := buildListMusicTrackRequest(c)
 
-	musicTracks, err := services.GetMusicTracks(page, size, sort, filterMap)
+	musicTracks, err := services.GetMusicTracks(request)
 	if err != nil {
 		response.Message = err.Error()
 		response.SendResponse(c)
 		return
 	}
 
+	hasPrev := request.Paging.Page > 0
+	hasNext := len(musicTracks) > request.Paging.Size
+
 	response.StatusCode = http.StatusOK
 	response.Success = true
-	response.Data = gin.H{"Music Tracks": musicTracks}
+	response.Data = gin.H{
+		"items":          musicTracks,
+		"page":           request.Paging.Page,
+		"size":           request.Paging.Size,
+		"sort":           request.Paging.Sort,
+		"paging_ignore":  request.Paging.PagingIgnore,
+		"hasPrev":        hasPrev,
+		"hasNext":        hasNext,
+		"total_elements": len(musicTracks),
+	}
 	response.SendResponse(c)
+}
+
+func buildListMusicTrackRequest(c *gin.Context) *models.GetMusicTrackRequest {
+	pagingReq := utils.AsPageable(c)
+
+	return &models.GetMusicTrackRequest{
+		Title:  c.DefaultQuery("title", ""),
+		Artist: c.DefaultQuery("artist", ""),
+		Album:  c.DefaultQuery("album", ""),
+		Genre:  c.DefaultQuery("genre", ""),
+		Paging: *pagingReq,
+	}
 }

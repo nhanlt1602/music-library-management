@@ -87,7 +87,7 @@ The application starts at port 8080:
 
 - `GET /swagger/*` Auto created swagger endpoint
 
-You can also see: http://localhost:8080/swagger/index.html
+You can also see: http://localhost:8083/swagger/index.html
 
 ![Alt text](images/image.png)
 

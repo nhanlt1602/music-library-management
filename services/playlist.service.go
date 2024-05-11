@@ -14,15 +14,16 @@ import (
 
 func CreatePlaylist(playlistId primitive.ObjectID, playlistRequest *models.PlaylistRequest) (*db.Playlist, error) {
 	playlist := db.NewPlaylist(
+		playlistId,
 		playlistRequest.Title,
-		playlistRequest.Tracks,
-		primitive.NewObjectID())
-	// playlistRequest.Owner)
+		playlistRequest.Track,
+		playlistRequest.Owner)
 
 	err := mgm.Coll(playlist).Create(playlist)
 
 	if err != nil {
-		return nil, errors.New("Failed to create playlist")
+		// return nil, errors.New("Failed to create playlist")
+		return nil, err
 	}
 
 	return playlist, nil
@@ -49,22 +50,21 @@ func GetPlaylistById(playlistId primitive.ObjectID) (*db.Playlist, error) {
 	return playlist, nil
 }
 
-func GetPlaylists(page int, size int, sort string, filter map[string]interface{}) ([]*db.Playlist, error) {
+func GetPlaylists(request *models.GetPlaylistRequest) ([]*db.Playlist, error) {
 	playlists := []*db.Playlist{}
-	query := bson.M{}
+	limit := int64(request.Paging.Size)
+	page := int64(request.Paging.Page)
+	var err error
 
-	for key, value := range filter {
-		query[key] = value
+	if request.Paging.PagingIgnore {
+		err = mgm.Coll(&db.Playlist{}).SimpleFind(&playlists, &options.FindOptions{})
+	} else {
+		findOptions := options.Find().
+			SetSkip(int64(page * limit)).
+			SetLimit(int64(limit))
+
+		err = mgm.Coll(&db.Playlist{}).SimpleFind(&playlists, bson.M{}, findOptions)
 	}
-
-	limit := int64(size)
-	skip := int64((page - 1) * size)
-
-	err := mgm.Coll(&db.Playlist{}).SimpleFind(&playlists, query, &options.FindOptions{
-		Limit: &limit,
-		Skip:  &skip,
-		Sort:  sort,
-	})
 
 	if err != nil {
 		return nil, errors.New("Failed to get playlists")
@@ -81,14 +81,19 @@ func UpdatePlaylist(playlistId primitive.ObjectID, playlistRequest *models.Playl
 		return errors.New("Failed to find playlist")
 	}
 
-	playlist.Title = playlistRequest.Title
-	playlist.Track = playlistRequest.Tracks
-	playlist.Owner = playlistRequest.Owner
+	playlistUpdate := bson.M{
+		"$set": bson.M{
+			"title": playlistRequest.Title,
+			"track": playlistRequest.Track,
+			"owner": playlistRequest.Owner,
+		},
+	}
 
-	err = mgm.Coll(playlist).Update(playlist)
+	_, err = mgm.Coll(playlist).UpdateOne(mgm.Ctx(), bson.M{field.ID: playlistId}, playlistUpdate)
 
 	if err != nil {
 		return errors.New("Failed to update playlist")
 	}
+
 	return nil
 }

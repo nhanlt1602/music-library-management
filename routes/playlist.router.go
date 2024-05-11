@@ -28,5 +28,9 @@ func PlaylistRoute(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
 			"",
 			controllers.GetPlaylists,
 		)
+		auth.DELETE(
+			"/:id",
+			controllers.DeletePlaylist,
+		)
 	}
 }

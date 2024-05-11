@@ -40,7 +40,58 @@ definitions:
 info:
   contact: {}
 paths:
-  /music-track:
+  /music-tracks:
+    get:
+      consumes:
+      - application/json
+      description: get all music tracks, have paging, sorting, and filtering
+      parameters:
+      - description: Page Number
+        in: query
+        name: page
+        type: integer
+      - description: Page Size
+        in: query
+        name: size
+        type: integer
+      - description: Sort Field
+        in: query
+        name: sort
+        type: string
+      - description: search Field
+        in: query
+        name: search
+        type: string
+      - description: Title
+        in: query
+        name: title
+        type: string
+      - description: Artist
+        in: query
+        name: artist
+        type: string
+      - description: Album
+        in: query
+        name: album
+        type: string
+      - description: Genre
+        in: query
+        name: genre
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get all music tracks
+      tags:
+      - music-tracks
     post:
       consumes:
       - application/json
@@ -66,7 +117,7 @@ paths:
       summary: Create Music Track
       tags:
       - music-tracks
-  /music-track/{id}:
+  /music-tracks/{id}:
     delete:
       consumes:
       - application/json
@@ -145,42 +196,6 @@ paths:
       summary: Update a music track
       tags:
       - music-tracks
-  /music-tracks:
-    get:
-      consumes:
-      - application/json
-      description: get all music tracks, have paging, sorting, and filtering
-      parameters:
-      - description: Page Number
-        in: query
-        name: page
-        type: integer
-      - description: Page Size
-        in: query
-        name: size
-        type: integer
-      - description: Sort Field
-        in: query
-        name: sort
-        type: string
-      - description: Filter Field
-        in: query
-        name: filter
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.Response'
-      summary: Get all music tracks
-      tags:
-      - music-tracks
   /ping:
     get:
       consumes:
@@ -196,7 +211,42 @@ paths:
       summary: Ping
       tags:
       - ping
-  /playlist:
+  /playlists:
+    get:
+      consumes:
+      - application/json
+      description: get all playlists
+      parameters:
+      - description: Page Number
+        in: query
+        name: page
+        type: integer
+      - description: Page Size
+        in: query
+        name: size
+        type: integer
+      - description: Sort
+        in: query
+        name: sort
+        type: string
+      - description: search
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get all playlists
+      tags:
+      - playlists
     post:
       consumes:
       - application/json
@@ -222,7 +272,7 @@ paths:
       summary: Create Playlist
       tags:
       - playlists
-  /playlist/{id}:
+  /playlists/{id}:
     delete:
       consumes:
       - application/json
@@ -299,42 +349,6 @@ paths:
           schema:
             $ref: '#/definitions/models.Response'
       summary: Update a playlist
-      tags:
-      - playlists
-  /playlists:
-    get:
-      consumes:
-      - application/json
-      description: get all playlists
-      parameters:
-      - description: Page Number
-        in: query
-        name: page
-        type: integer
-      - description: Page Size
-        in: query
-        name: size
-        type: integer
-      - description: Sort
-        in: query
-        name: sort
-        type: string
-      - description: Filter
-        in: query
-        name: filter
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.Response'
-      summary: Get all playlists
       tags:
       - playlists
 swagger: "2.0"

@@ -3,6 +3,7 @@ package services
 import (
 	"log"
 	"music-library-management/models"
+	"time"
 
 	"github.com/kamva/mgm/v3"
 	"github.com/spf13/viper"
@@ -31,14 +32,27 @@ func LoadConfig() {
 	if err := Config.Validate(); err != nil {
 		panic(err)
 	}
+
+	// Increase the timeout duration for connecting to the MongoDB server
+	options := options.Client().ApplyURI(Config.MongodbUri).SetConnectTimeout(10 * time.Second)
+	err := mgm.SetDefaultConfig(nil, Config.MongodbDatabase, options)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func InitMongoDB() {
 	// Code for initializing MongoDB
-	err := mgm.SetDefaultConfig(nil, Config.MongodbDatabase, options.Client().ApplyURI(Config.MongodbUri))
+	// Increase the timeout duration for connecting to the MongoDB server
+	options := options.Client().ApplyURI(Config.MongodbUri).SetConnectTimeout(10 * time.Second)
+	err := mgm.SetDefaultConfig(nil, Config.MongodbDatabase, options)
 	if err != nil {
 		panic(err)
 	}
+	// err := mgm.SetDefaultConfig(nil, Config.MongodbDatabase, options.Client().ApplyURI(Config.MongodbUri))
+	// if err != nil {
+	// 	panic(err)
+	// }
 
 	log.Println("Connected to MongoDB!")
 }

@@ -20,7 +20,7 @@ services:
     image: mongo
     restart: unless-stopped
     ports:
-      - "27020:27017"
+      - "27021:27017"
     networks:
       - backend
 

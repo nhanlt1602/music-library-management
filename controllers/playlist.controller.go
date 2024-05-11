@@ -81,6 +81,7 @@ func UpdatePlaylist(c *gin.Context) {
 
 	response.StatusCode = http.StatusOK
 	response.Success = true
+	response.Message = "Playlist updated successfully"
 	response.SendResponse(c)
 }
 
@@ -117,6 +118,7 @@ func DeletePlaylist(c *gin.Context) {
 
 	response.StatusCode = http.StatusOK
 	response.Success = true
+	response.Message = "Playlist deleted successfully"
 	response.SendResponse(c)
 }
 
@@ -165,8 +167,9 @@ func GetPlaylistById(c *gin.Context) {
 // @Produce      json
 // @Param        page query int false "Page Number"
 // @Param        size query int false "Page Size"
+// @Param 	     paging_ignore query bool false "Paging Ignore"
 // @Param        sort query string false "Sort"
-// @Param        filter query string false "Filter"
+// @Param        search query string false "search"
 // @Success      200  {object}  models.Response
 // @Failure      400  {object}  models.Response
 // @Router       /playlists [get]
@@ -176,20 +179,40 @@ func GetPlaylists(c *gin.Context) {
 		Success:    false,
 	}
 
-	page, size, sort, filter, shouldReturn := utils.Pagination(c, response)
-	if shouldReturn {
-		return
-	}
+	request := buildListPlaylistRequest(c)
 
-	playlists, err := services.GetPlaylists(page, size, sort, filter)
+	playlists, err := services.GetPlaylists(request)
 	if err != nil {
 		response.Message = err.Error()
 		response.SendResponse(c)
 		return
 	}
 
+	hasPrev := request.Paging.Page > 0
+	hasNext := len(playlists) > request.Paging.Size
+
 	response.StatusCode = http.StatusOK
 	response.Success = true
-	response.Data = gin.H{"Playlists": playlists}
+	response.Data = gin.H{
+		"items":          playlists,
+		"page":           request.Paging.Page,
+		"size":           request.Paging.Size,
+		"sort":           request.Paging.Sort,
+		"paging_ignore":  request.Paging.PagingIgnore,
+		"hasPrev":        hasPrev,
+		"hasNext":        hasNext,
+		"total_elements": len(playlists),
+	}
 	response.SendResponse(c)
+}
+
+func buildListPlaylistRequest(c *gin.Context) *models.GetPlaylistRequest {
+	pagingReq := utils.AsPageable(c)
+
+	return &models.GetPlaylistRequest{
+		Title: c.DefaultQuery("title", ""),
+		// Owner:  c.DefaultQuery("owner", ""),
+		// Track:  c.DefaultQuery("track", ""),
+		Paging: *pagingReq,
+	}
 }
