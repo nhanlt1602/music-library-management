@@ -3,7 +3,7 @@ package routes
 import (
 	"music-library-management/docs"
 	"music-library-management/models"
-	"music-library-management/repository"
+	"music-library-management/services"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -21,6 +21,7 @@ func New() *gin.Engine {
 	v1 := r.Group("/v1")
 	{
 		PingRoute(v1)
+		MusicTrackRoute(v1)
 	}
 
 	docs.SwaggerInfo.BasePath = v1.BasePath()
@@ -46,5 +47,5 @@ func initRoute(r *gin.Engine) {
 
 func InitGin() {
 	gin.DisableConsoleColor()
-	gin.SetMode(repository.Config.Mode)
+	gin.SetMode(services.Config.Mode)
 }

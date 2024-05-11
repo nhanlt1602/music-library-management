@@ -17,8 +17,9 @@ type MusicTrack struct {
 	Mp3File          string             `json:"mp3_file" bson:"mp3_file"`
 }
 
-func NewMusicTrack(title string, artist string, album string, genre string, releaseYear int, duration int, mp3File string) *MusicTrack {
+func NewMusicTrack(id primitive.ObjectID, title string, artist string, album string, genre string, releaseYear int, duration int, mp3File string) *MusicTrack {
 	return &MusicTrack{
+		Id:          id,
 		Title:       title,
 		Artist:      artist,
 		Album:       album,

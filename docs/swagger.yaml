@@ -1,4 +1,21 @@
 definitions:
+  models.MusicTrackRequest:
+    properties:
+      album:
+        type: string
+      artist:
+        type: string
+      duration:
+        type: integer
+      genre:
+        type: string
+      mp3_file:
+        type: string
+      release_year:
+        type: integer
+      title:
+        type: string
+    type: object
   models.Response:
     properties:
       data:
@@ -12,6 +29,32 @@ definitions:
 info:
   contact: {}
 paths:
+  /music-track:
+    post:
+      consumes:
+      - application/json
+      description: create a new music track
+      parameters:
+      - description: Music Track Request
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/models.MusicTrackRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Create Music Track
+      tags:
+      - music-tracks
   /ping:
     get:
       consumes:

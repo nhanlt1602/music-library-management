@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 	"log"
-	"music-library-management/repository"
 	"music-library-management/routes"
+	"music-library-management/services"
 	"net/http"
 	"os"
 	"os/signal"
@@ -12,14 +12,14 @@ import (
 )
 
 func main() {
-	repository.LoadConfig()
-	repository.InitMongoDB()
+	services.LoadConfig()
+	services.InitMongoDB()
 
 	routes.InitGin()
 	router := routes.New()
 
 	server := &http.Server{
-		Addr:         repository.Config.ServerAddr + ":" + repository.Config.ServerPort,
+		Addr:         services.Config.ServerAddr + ":" + services.Config.ServerPort,
 		WriteTimeout: time.Second * 30,
 		ReadTimeout:  time.Second * 30,
 		IdleTimeout:  time.Second * 30,

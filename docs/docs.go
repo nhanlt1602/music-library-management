@@ -15,6 +15,46 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/music-track": {
+            "post": {
+                "description": "create a new music track",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "music-tracks"
+                ],
+                "summary": "Create Music Track",
+                "parameters": [
+                    {
+                        "description": "Music Track Request",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.MusicTrackRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/ping": {
             "get": {
                 "description": "check server",
@@ -40,6 +80,32 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "models.MusicTrackRequest": {
+            "type": "object",
+            "properties": {
+                "album": {
+                    "type": "string"
+                },
+                "artist": {
+                    "type": "string"
+                },
+                "duration": {
+                    "type": "integer"
+                },
+                "genre": {
+                    "type": "string"
+                },
+                "mp3_file": {
+                    "type": "string"
+                },
+                "release_year": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Response": {
             "type": "object",
             "properties": {
@@ -60,12 +126,12 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "1.0",
-	Host:             "localhost:8083",
-	BasePath:         "/",
-	Schemes:          []string{"http"},
-	Title:            "Music Library Management Documentation",
-	Description:      "Golang - Gin - MongoDB - Redis - Restful API",
+	Version:          "",
+	Host:             "",
+	BasePath:         "",
+	Schemes:          []string{},
+	Title:            "",
+	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",
