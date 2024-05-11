@@ -20,7 +20,7 @@ import (
 // @Param        req body models.MusicTrackRequest true "Music Track Request"
 // @Success      200  {object}  models.Response
 // @Failure      400  {object}  models.Response
-// @Router       /music-track [post]
+// @Router       /music-tracks [post]
 func CreateMusicTrack(c *gin.Context) {
 	var requestBody models.MusicTrackRequest
 
@@ -54,7 +54,7 @@ func CreateMusicTrack(c *gin.Context) {
 // @Param        req body models.MusicTrackRequest true "Music Track Request"
 // @Success      200  {object}  models.Response
 // @Failure      400  {object}  models.Response
-// @Router       /music-track/{id} [put]
+// @Router       /music-tracks/{id} [put]
 func UpdateMusicTrack(c *gin.Context) {
 	response := &models.Response{
 		StatusCode: http.StatusBadRequest,
@@ -88,7 +88,7 @@ func UpdateMusicTrack(c *gin.Context) {
 // @Param        id path string true "Music Track ID"
 // @Success      200  {object}  models.Response
 // @Failure      400  {object}  models.Response
-// @Router       /music-track/{id} [delete]
+// @Router       /music-tracks/{id} [delete]
 func DeleteMusicTrack(c *gin.Context) {
 	response := &models.Response{
 		StatusCode: http.StatusBadRequest,
@@ -119,7 +119,7 @@ func DeleteMusicTrack(c *gin.Context) {
 // @Param        id path string true "Music Track ID"
 // @Success      200  {object}  models.Response
 // @Failure      400  {object}  models.Response
-// @Router       /music-track/{id} [get]
+// @Router       /music-tracks/{id} [get]
 func GetMusicTrackById(c *gin.Context) {
 	response := &models.Response{
 		StatusCode: http.StatusBadRequest,

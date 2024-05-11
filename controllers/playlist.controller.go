@@ -20,7 +20,7 @@ import (
 // @Param        req body models.PlaylistRequest true "Playlist Request"
 // @Success      200  {object}  models.Response
 // @Failure      400  {object}  models.Response
-// @Router       /playlist [post]
+// @Router       /playlists [post]
 func CreatePlaylist(c *gin.Context) {
 	var requestBody models.PlaylistRequest
 
@@ -54,7 +54,7 @@ func CreatePlaylist(c *gin.Context) {
 // @Param        req body models.PlaylistRequest true "Playlist Request"
 // @Success      200  {object}  models.Response
 // @Failure      400  {object}  models.Response
-// @Router       /playlist/{id} [put]
+// @Router       /playlists/{id} [put]
 func UpdatePlaylist(c *gin.Context) {
 	response := &models.Response{
 		StatusCode: http.StatusBadRequest,
@@ -93,7 +93,7 @@ func UpdatePlaylist(c *gin.Context) {
 // @Param        id path string true "Playlist ID"
 // @Success      200  {object}  models.Response
 // @Failure      400  {object}  models.Response
-// @Router       /playlist/{id} [delete]
+// @Router       /playlists/{id} [delete]
 func DeletePlaylist(c *gin.Context) {
 	response := &models.Response{
 		StatusCode: http.StatusBadRequest,
@@ -129,7 +129,7 @@ func DeletePlaylist(c *gin.Context) {
 // @Param        id path string true "Playlist ID"
 // @Success      200  {object}  models.Response
 // @Failure      400  {object}  models.Response
-// @Router       /playlist/{id} [get]
+// @Router       /playlists/{id} [get]
 func GetPlaylistById(c *gin.Context) {
 	response := &models.Response{
 		StatusCode: http.StatusBadRequest,

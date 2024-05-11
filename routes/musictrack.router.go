@@ -8,7 +8,7 @@ import (
 )
 
 func MusicTrackRoute(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
-	auth := router.Group("/music-track")
+	auth := router.Group("/music-tracks")
 	{
 		auth.POST(
 			"",
