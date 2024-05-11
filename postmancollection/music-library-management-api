@@ -1,0 +1,361 @@
+{
+	"info": {
+		"_postman_id": "ea992340-1bc1-4c2e-8a4e-16519ca93b64",
+		"name": "Music Library Management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13369059",
+		"_collection_link": "https://frontendnhan.postman.co/workspace/NhanLe~382ca753-9f89-4163-8d07-45526a978058/collection/13369059-ea992340-1bc1-4c2e-8a4e-16519ca93b64?action=share&source=collection_link&creator=13369059"
+	},
+	"item": [
+		{
+			"name": "Music Track",
+			"item": [
+				{
+					"name": "Create Music Track",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"album\": \"sakara\",\n    \"artist\": \"sakara\",\n    \"duration\": 200,\n    \"genre\": \"Girl\",\n    \"mp3_file\": \"sakara.mp3\",\n    \"release_year\": 2024,\n    \"title\": \"sakara Song\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8082/v1/music-tracks/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"music-tracks",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Music Track",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"album\": \"Taylor Swift Fall\",\n    \"artist\": \"Taylor Swift Level1\",\n    \"duration\": 2333,\n    \"genre\": \"LGBT\",\n    \"mp3_file\": \"123.mp3\",\n    \"release_year\": 2022,\n    \"title\": \"Taylor\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8082/v1/music-tracks/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"music-tracks",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "663f8da4fa97c2fe0edae0aa"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Music Tracks",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/v1/music-tracks?page=0&size=10&sort=title,asc&paging_ignore=true",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"music-tracks"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "sort",
+									"value": "title,asc"
+								},
+								{
+									"key": "paging_ignore",
+									"value": "true"
+								},
+								{
+									"key": "title",
+									"value": "Song",
+									"disabled": true
+								},
+								{
+									"key": "artist",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "album",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "genre",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Music Tracks by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/v1/music-tracks/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"music-tracks",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "663f8da4fa97c2fe0edae0aa"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Music Track By Id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/v1/music-tracks/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"music-tracks",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "663f955ab33511d220260737"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Playlist",
+			"item": [
+				{
+					"name": "Create playlist",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"owner\": \"663fa42351e0c073e0c11823\",\n  \"title\": \"List Nhac Bolero\",\n  \"track\": [\n    \"663fa42351e0c073e0c1182d\",\n    \"663fa46251e0c073e0c1182e\"\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8082/v1/playlists",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"playlists"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update playlist",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"owner\": \"663fac181d69620d6a789f3c\",\n    \"title\": \"List Nhac Bolero Viet Nam 2023\",\n    \"track\": [\n        \"663fa47751e0c073e0c11830\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8082/v1/playlists/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"playlists",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "663fb384045541f4d311dadf"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get playlists",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/v1/playlists?page=0&size=10&paging_ignore=true&title=List",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"playlists"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "paging_ignore",
+									"value": "true"
+								},
+								{
+									"key": "title",
+									"value": "List"
+								},
+								{
+									"key": "sort",
+									"value": "title,desc",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get playlist by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/v1/playlists/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"playlists",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "663fb384045541f4d311dadf"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Play List By Id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/v1/playlists/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"playlists",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "663faa396c709a59843dcdd9"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

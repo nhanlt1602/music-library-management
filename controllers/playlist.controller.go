@@ -5,6 +5,7 @@ import (
 	"music-library-management/services"
 	"music-library-management/utils"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -169,7 +170,7 @@ func GetPlaylistById(c *gin.Context) {
 // @Param        size query int false "Page Size"
 // @Param 	     paging_ignore query bool false "Paging Ignore"
 // @Param        sort query string false "Sort"
-// @Param        search query string false "search"
+// @Param        title query string false "title"
 // @Success      200  {object}  models.Response
 // @Failure      400  {object}  models.Response
 // @Router       /playlists [get]
@@ -208,11 +209,24 @@ func GetPlaylists(c *gin.Context) {
 
 func buildListPlaylistRequest(c *gin.Context) *models.GetPlaylistRequest {
 	pagingReq := utils.AsPageable(c)
+	ownerString := c.DefaultQuery("owner", "")
+	ownerId, _ := primitive.ObjectIDFromHex(ownerString)
+
+	trackStr := c.DefaultQuery("track", "")
+	trackIds := make([]primitive.ObjectID, 0)
+	if trackStr != "" {
+		trackArrStr := strings.Split(trackStr, ",")
+
+		for _, item := range trackArrStr {
+			trackId, _ := primitive.ObjectIDFromHex(item)
+			trackIds = append(trackIds, trackId)
+		}
+	}
 
 	return &models.GetPlaylistRequest{
-		Title: c.DefaultQuery("title", ""),
-		// Owner:  c.DefaultQuery("owner", ""),
-		// Track:  c.DefaultQuery("track", ""),
+		Title:  c.DefaultQuery("title", ""),
+		Owner:  ownerId,
+		Track:  trackIds,
 		Paging: *pagingReq,
 	}
 }

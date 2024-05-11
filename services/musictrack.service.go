@@ -5,6 +5,7 @@ import (
 	"log"
 	"music-library-management/models"
 	db "music-library-management/models/db"
+	"strings"
 
 	"github.com/kamva/mgm/v3"
 
@@ -42,32 +43,44 @@ func GetMusicTracks(request *models.GetMusicTrackRequest) ([]*db.MusicTrack, err
 	limit := int64(request.Paging.Size)
 	page := int64(request.Paging.Page)
 	var err error
-	// how to search if request.title != "", request.artist != "", request.album != "", request.genre != "", request.releaseYear != 0
 
 	query := bson.M{}
+
 	if request.Title != "" {
-		query["title"] = request.Title
+		query["title"] = bson.M{"$regex": request.Title, "$options": "i"}
 	}
 
 	if request.Artist != "" {
-		query["artist"] = request.Artist
+		query["artist"] = bson.M{"$regex": request.Artist, "$options": "i"}
 	}
 
 	if request.Album != "" {
-		query["album"] = request.Album
+		query["album"] = bson.M{"$regex": request.Album, "$options": "i"}
 	}
 
 	if request.Genre != "" {
-		query["genre"] = request.Genre
+		query["genre"] = bson.M{"$regex": request.Genre, "$options": "i"}
+	}
+
+	findOptions := options.Find()
+
+	if request.Paging.Sort != "" {
+		sort := strings.Split(request.Paging.Sort, ",")
+		sortField := sort[0]
+		sortOrder := 1 // ascending order by default
+
+		if sort[1] == "desc" {
+			sortOrder = -1 // descending order
+		}
+
+		findOptions.SetSort(bson.M{sortField: sortOrder})
 	}
 
 	if request.Paging.PagingIgnore {
-		err = mgm.Coll(&db.MusicTrack{}).SimpleFind(&musicTracks, query, &options.FindOptions{})
+		err = mgm.Coll(&db.MusicTrack{}).SimpleFind(&musicTracks, query, findOptions)
 	} else {
-		findOptions := options.Find().
-			SetSkip(int64(page * limit)).
-			SetLimit(int64(limit))
-
+		findOptions.SetSkip(int64(page * limit))
+		findOptions.SetLimit(int64(limit))
 		err = mgm.Coll(&db.MusicTrack{}).SimpleFind(&musicTracks, query, findOptions)
 	}
 

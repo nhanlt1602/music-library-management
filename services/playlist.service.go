@@ -4,6 +4,7 @@ import (
 	"errors"
 	"music-library-management/models"
 	db "music-library-management/models/db"
+	"strings"
 
 	"github.com/kamva/mgm/v3"
 	"github.com/kamva/mgm/v3/field"
@@ -56,14 +57,38 @@ func GetPlaylists(request *models.GetPlaylistRequest) ([]*db.Playlist, error) {
 	page := int64(request.Paging.Page)
 	var err error
 
-	if request.Paging.PagingIgnore {
-		err = mgm.Coll(&db.Playlist{}).SimpleFind(&playlists, &options.FindOptions{})
-	} else {
-		findOptions := options.Find().
-			SetSkip(int64(page * limit)).
-			SetLimit(int64(limit))
+	query := bson.M{}
 
-		err = mgm.Coll(&db.Playlist{}).SimpleFind(&playlists, bson.M{}, findOptions)
+	if request.Title != "" {
+		query["title"] = bson.M{"$regex": request.Title, "$options": "i"}
+	}
+
+	// search by user id primitive.ObjectID
+	if request.Owner != primitive.NilObjectID {
+		query["owner"] = request.Owner
+	}
+
+	findOptions := options.Find()
+
+	if request.Paging.Sort != "" {
+		sort := strings.Split(request.Paging.Sort, ",")
+		sortField := sort[0]
+		sortOrder := 1 // ascending order by default
+
+		if sort[1] == "desc" {
+			sortOrder = -1 // descending order
+		}
+
+		findOptions.SetSort(bson.M{sortField: sortOrder})
+	}
+
+	if request.Paging.PagingIgnore {
+		err = mgm.Coll(&db.Playlist{}).SimpleFind(&playlists, query, findOptions)
+	} else {
+		findOptions.SetSkip(int64(page * limit))
+		findOptions.SetLimit(int64(limit))
+
+		err = mgm.Coll(&db.Playlist{}).SimpleFind(&playlists, query, findOptions)
 	}
 
 	if err != nil {
