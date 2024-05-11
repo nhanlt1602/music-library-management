@@ -22,6 +22,7 @@ func New() *gin.Engine {
 	{
 		PingRoute(v1)
 		MusicTrackRoute(v1)
+		PlaylistRoute(v1)
 	}
 
 	docs.SwaggerInfo.BasePath = v1.BasePath()

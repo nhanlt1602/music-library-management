@@ -10,12 +10,14 @@ type Playlist struct {
 	Id               string               `json:"id" bson:"_id"`
 	Title            string               `json:"title" bson:"title"`
 	Track            []primitive.ObjectID `json:"track" bson:"track"`
+	Owner            primitive.ObjectID   `json:"owner" bson:"owner"`
 }
 
-func NewPlaylist(title string, track []primitive.ObjectID) *Playlist {
+func NewPlaylist(title string, track []primitive.ObjectID, owner primitive.ObjectID) *Playlist {
 	return &Playlist{
 		Title: title,
 		Track: track,
+		Owner: owner,
 	}
 }
 

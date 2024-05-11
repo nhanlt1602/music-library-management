@@ -16,6 +16,17 @@ definitions:
       title:
         type: string
     type: object
+  models.PlaylistRequest:
+    properties:
+      owner:
+        type: string
+      title:
+        type: string
+      tracks:
+        items:
+          type: string
+        type: array
+    type: object
   models.Response:
     properties:
       data:
@@ -55,6 +66,121 @@ paths:
       summary: Create Music Track
       tags:
       - music-tracks
+  /music-track/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete a music track by id
+      parameters:
+      - description: Music Track ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Delete a music track
+      tags:
+      - music-tracks
+    get:
+      consumes:
+      - application/json
+      description: get a music track by id
+      parameters:
+      - description: Music Track ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get a music track by id
+      tags:
+      - music-tracks
+    put:
+      consumes:
+      - application/json
+      description: update a music track by id
+      parameters:
+      - description: Music Track ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Music Track Request
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/models.MusicTrackRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Update a music track
+      tags:
+      - music-tracks
+  /music-tracks:
+    get:
+      consumes:
+      - application/json
+      description: get all music tracks, have paging, sorting, and filtering
+      parameters:
+      - description: Page Number
+        in: query
+        name: page
+        type: integer
+      - description: Page Size
+        in: query
+        name: size
+        type: integer
+      - description: Sort Field
+        in: query
+        name: sort
+        type: string
+      - description: Filter Field
+        in: query
+        name: filter
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get all music tracks
+      tags:
+      - music-tracks
   /ping:
     get:
       consumes:
@@ -70,4 +196,145 @@ paths:
       summary: Ping
       tags:
       - ping
+  /playlist:
+    post:
+      consumes:
+      - application/json
+      description: create a new playlist
+      parameters:
+      - description: Playlist Request
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/models.PlaylistRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Create Playlist
+      tags:
+      - playlists
+  /playlist/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete a playlist by id
+      parameters:
+      - description: Playlist ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Delete a playlist
+      tags:
+      - playlists
+    get:
+      consumes:
+      - application/json
+      description: get a playlist by id
+      parameters:
+      - description: Playlist ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get a playlist by id
+      tags:
+      - playlists
+    put:
+      consumes:
+      - application/json
+      description: update a playlist by id
+      parameters:
+      - description: Playlist ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Playlist Request
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/models.PlaylistRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Update a playlist
+      tags:
+      - playlists
+  /playlists:
+    get:
+      consumes:
+      - application/json
+      description: get all playlists
+      parameters:
+      - description: Page Number
+        in: query
+        name: page
+        type: integer
+      - description: Page Size
+        in: query
+        name: size
+        type: integer
+      - description: Sort
+        in: query
+        name: sort
+        type: string
+      - description: Filter
+        in: query
+        name: filter
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get all playlists
+      tags:
+      - playlists
 swagger: "2.0"

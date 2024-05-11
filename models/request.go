@@ -1,6 +1,9 @@
 package models
 
-import validation "github.com/go-ozzo/ozzo-validation"
+import (
+	validation "github.com/go-ozzo/ozzo-validation"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
 
 type MusicTrackRequest struct {
 	Title       string `json:"title"`
@@ -10,6 +13,20 @@ type MusicTrackRequest struct {
 	ReleaseYear int    `json:"release_year"`
 	Duration    int    `json:"duration"`
 	Mp3File     string `json:"mp3_file"`
+}
+
+type PlaylistRequest struct {
+	Title  string               `json:"title"`
+	Tracks []primitive.ObjectID `json:"tracks"`
+	Owner  primitive.ObjectID   `json:"owner"`
+}
+
+func (a PlaylistRequest) Validate() error {
+	return validation.ValidateStruct(&a,
+		validation.Field(&a.Title, validation.Required),
+		validation.Field(&a.Tracks, validation.Required),
+		validation.Field(&a.Owner, validation.Required),
+	)
 }
 
 func (a MusicTrackRequest) Validate() error {
