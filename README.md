@@ -1,6 +1,4 @@
-                                ![Alt text](https://miro.medium.com/v2/resize:fit:472/1*WpUuwCQZWhVzP3X0Gibaqw.png)
-                                
-                                                GoLang + MongoDB + Redis RESTful Application Starter
+![Alt text](https://miro.medium.com/v2/resize:fit:472/1*WpUuwCQZWhVzP3X0Gibaqw.png)
 ----------------------------------------------------
 Hi everyone, this project is a 'Boilerplate to build RESTful
 Applications  using
