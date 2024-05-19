@@ -29,7 +29,7 @@ services:
     image: redis:bullseye
     restart: unless-stopped
     ports:
-      - "6379:6379"
+      - "6383:6379"
     networks:
         - backend
 
