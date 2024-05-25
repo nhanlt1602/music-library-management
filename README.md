@@ -57,11 +57,16 @@ docker-compose up -d
 ```
 
 #### Run docker exec in terminal
-1. docker ps
-2. Copy container id specific connect
-3. docker exec -it <container_id> sh
+````bash
 
-!<Note> if connect mongod use: <b>mongosh</b>
+docker ps
+
+# Copy container id specific connect
+docker exec -it <container_id> sh
+
+#if connect mongod use: <b>mongosh</b>
+
+````
 
 #### Using Local Environment
 
