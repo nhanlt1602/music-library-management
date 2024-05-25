@@ -56,6 +56,13 @@ cd go-rest-api-starter
 docker-compose up -d
 ```
 
+#### Run docker exec in terminal
+1. docker ps
+2. Copy container id specific connect
+3. docker exec -it <container_id> sh
+
+!<Note> if connect mongod use: <b>mongosh</b>
+
 #### Using Local Environment
 
 ```bash
